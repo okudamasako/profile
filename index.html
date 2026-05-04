@@ -279,8 +279,8 @@
     gap: 3rem; margin-top: 3rem;
   }
   .arch-item { background: var(--warm-white); border: 1px solid var(--line); }
-  .arch-img { aspect-ratio: 16/9; overflow: hidden; background: var(--cream); }
-  .arch-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .arch-img { aspect-ratio: 16/9; overflow: hidden; background: var(--cream); display: flex; align-items: center; justify-content: center; }
+  .arch-img img { width: 100%; height: 100%; object-fit: contain; display: block; background: var(--cream); }
   .arch-item > *:not(.arch-img) { padding: 0 2rem; }
   .arch-item > .video-meta { padding-top: 1.5rem; }
   .arch-item > .design-note { padding-bottom: 2rem; }
