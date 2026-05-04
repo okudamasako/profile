@@ -18,7 +18,10 @@
     --line: rgba(44,42,38,0.12);
     --teal: #3D7A6E;
     --teal-pale: #E2EEEC;
+    --fs: 1;
   }
+  /* 文字サイズスケール */
+  html { font-size: calc(16px * var(--fs)); }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body {
@@ -49,6 +52,25 @@
     text-transform: uppercase; transition: color 0.2s;
   }
   .nav-links a:hover { color: var(--charcoal); }
+  /* 文字サイズ切り替えボタン */
+  .font-size-btns {
+    display: flex; align-items: center; gap: 4px; margin-left: 1.5rem;
+  }
+  .font-size-btns button {
+    background: none; border: 1px solid var(--line);
+    color: var(--mid); cursor: pointer;
+    border-radius: 4px; padding: 2px 8px;
+    transition: all 0.15s; font-family: 'Noto Sans JP', sans-serif;
+    line-height: 1.6;
+  }
+  .font-size-btns button:hover { border-color: var(--accent); color: var(--accent); }
+  .font-size-btns button.active {
+    background: var(--accent); border-color: var(--accent);
+    color: #fff; font-weight: 500;
+  }
+  .btn-s { font-size: 11px; }
+  .btn-m { font-size: 13px; }
+  .btn-l { font-size: 15px; }
   .hero {
     min-height: 100vh; display: grid;
     grid-template-columns: 1fr 1fr; padding-top: 5rem;
@@ -354,20 +376,37 @@
   .hero-sub      { animation-delay: 0.5s; }
   .hero-cta      { animation-delay: 0.6s; }
   .hero-card-float { opacity: 0; animation: fadeUp 0.9s ease 0.5s forwards; }
+  /* タブレット */
+  @media (max-width: 1024px) {
+    .video-grid { grid-template-columns: 1fr; }
+    .arch-grid  { grid-template-columns: 1fr; }
+  }
+  /* スマホ・小画面 */
   @media (max-width: 900px) {
-    nav { padding: 1rem 1.5rem; }
+    nav { padding: 1rem 1rem; }
     .nav-links { display: none; }
+    .font-size-btns { margin-left: 0; }
     .hero { grid-template-columns: 1fr; min-height: auto; }
-    .hero-left { padding: 6rem 2rem 3rem; }
-    .hero-right { min-height: 50vh; }
-    section { padding: 4rem 2rem; }
+    .hero-left { padding: 5rem 1.2rem 2rem; }
+    .hero-right { min-height: 40vh; }
+    section { padding: 3rem 1.2rem; }
     .ba-grid { grid-template-columns: 1fr; }
     .ba-arrow { transform: rotate(90deg); }
     .services-grid { grid-template-columns: 1fr; }
     .video-grid { grid-template-columns: 1fr; }
-    .arch-grid { grid-template-columns: 1fr; }
-    .about-inner { grid-template-columns: 1fr; }
-    footer { padding: 1.5rem 2rem; flex-direction: column; gap: 0.5rem; }
+    .arch-grid  { grid-template-columns: 1fr; }
+    .about-inner { grid-template-columns: 1fr; gap: 2rem; }
+    footer { padding: 1.5rem 1.2rem; flex-direction: column; gap: 0.5rem; }
+    .psr > div { grid-template-columns: 70px 1fr; }
+    .hero-card-float { padding: 1.5rem; }
+  }
+  /* 極小スマホ */
+  @media (max-width: 480px) {
+    .hero-name { font-size: 2.4rem; }
+    .hero-tagline { font-size: 1.2rem; }
+    .video-item > *:not(.video-thumb) { padding: 0 1rem; }
+    .video-item > .video-meta { padding-top: 1rem; }
+    .video-item > .design-note { padding-bottom: 1.2rem; }
   }
 </style>
 </head>
@@ -382,6 +421,11 @@
     <li><a href="#about">About</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
+  <div class="font-size-btns">
+    <button class="btn-s active" onclick="setFontSize('s',this)">小</button>
+    <button class="btn-m" onclick="setFontSize('m',this)">中</button>
+    <button class="btn-l" onclick="setFontSize('l',this)">大</button>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -820,5 +864,19 @@
   <span>okudamasako0209@gmail.com</span>
 </footer>
 
+<script>
+function setFontSize(size, btn) {
+  var scales = { s: 1, m: 1.2, l: 1.45 };
+  document.documentElement.style.setProperty('--fs', scales[size]);
+  document.querySelectorAll('.font-size-btns button').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  localStorage.setItem('fs', size);
+}
+(function(){
+  var saved = localStorage.getItem('fs') || 's';
+  var btn = document.querySelector('.btn-' + saved);
+  if(btn){ setFontSize(saved, btn); }
+})();
+</script>
 </body>
 </html>
